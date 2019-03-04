@@ -10,8 +10,6 @@ const port = 8000;
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 
-console.log(db);
-
 MongoClient.connect(db.url, {useNewUrlParser: true}, (err, client) => {
     if (err) return console.log(err)
     // console.log(database);
