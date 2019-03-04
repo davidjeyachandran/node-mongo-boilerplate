@@ -22,4 +22,14 @@ module.exports = (app, db) => {
 
         })
     })
+
+    app.get('/gasto/:id', (req, res) => {
+        id = req.params.id;
+        const details = {'_id': new ObjectID(id)};
+        db.collection(collectionName).findOne(details, (err, item) => {
+            if (err) return err;
+            res.send(item)
+        })
+
+    })
 }
