@@ -7,6 +7,40 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+<style>
+    .myForm {
+      display: grid;
+      grid-template-columns: [labels] auto [controls] 1fr;
+      grid-auto-flow: row;
+      grid-gap: .8em;
+      background: #eee;
+      padding: 1.2em;
+    }
+    .myForm > label  {
+      grid-column: labels;
+      grid-row: auto;
+    }
+    .myForm > input,
+    .myForm > textarea,
+    .myForm > button {
+      grid-column: controls;
+      grid-row: auto;
+      border: none;
+      padding: 1em;
+    }
+
+    button {
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    background-color: rgb(86, 151, 86);
+    }
+
+    button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    }
+</style>
+
 <script>
     function postData(endpoint, currentURL, targetURL, performance) {
         event.preventDefault();
@@ -28,7 +62,7 @@
 
 <body>
     <h1>Test Post</h1>
-    <form action="/gasto/add" method="post">
+    <form class="myForm" action="/gasto/add" method="post">
         <label for="nombre">Nombre</label>
         <input type="text" name="nombre" id="nombre">
         <label for="monto">Monto</label>
@@ -41,7 +75,7 @@
         </select>
         <label for="descripcion">Descripcion</label>
         <input type="text" name="descripcion" id="descripcion">
-        <button type="submit">submit</button>
+        <button class="button" type="submit">submit</button>
     </form>
 
     <a href="" onclick="postData('http://localhost:8000/save','home-mi', 'curso-vamos', null)">Send data</a>
