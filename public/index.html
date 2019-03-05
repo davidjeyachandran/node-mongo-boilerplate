@@ -92,6 +92,11 @@ body {
     font-weight: 200;
     padding-bottom: 5px;
 }
+
+.actions {
+  margin-top: 5px;
+  font-size: 0.6em; 
+}
 /* Responsive columns - one column layout (vertical) on small screens */
 @media screen and (max-width: 600px) {
   .column {
@@ -118,10 +123,13 @@ body {
             let html = '';
             data.forEach(item => {
                 if (item.nombre !== undefined && item.nombre !== '') {
+                  console.log(item);
+                  
                     html += '<div class="column"><div class="card">' + 
                         '<div class=label> Nombre </div><div class=field>' + item.nombre + '</div>' +
                         '<div class=label> Monto </div><div class=field>' + item.monto + '</div>' +
                         '<div class=label> Categoria </div><div class=field>' + item.categoria + '</div>' +
+                        '<div class=actions><a class=deletelink href="/gasto/delete/' + item._id + '">Borrar</a></div>' +
                         '</div></div>';
                 }
             })
@@ -146,12 +154,34 @@ body {
                 getData('/gasto');
             }           
                         
-        })
+        });
+
+        if (document.addEventListener) document.addEventListener('click', clickEventDelete, false);
+        function clickEventDelete(e) {
+            var e = window.e || e;         
+            let href = (e.target.tagName === 'A') ? e.target.href : e.target.parentNode.href
+            if (href) {
+                e.preventDefault();
+                console.log(href);
+            }
+        }
 
         function postData(endpoint, nombre, monto, categoria) {
             fetch(endpoint, {
                 method: 'POST', // or 'PUT'
                 body: JSON.stringify({nombre, monto, categoria}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err))
+        }
+
+        function deleteData(endpoint) {
+            fetch(endpoint, {
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 }
