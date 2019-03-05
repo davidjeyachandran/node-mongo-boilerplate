@@ -40,11 +40,18 @@
     color: white;
     }
 
-    #nombre:valid {
-        border-color: black;
+    #results{
+        display: grid;
+        text-align: center;
+        grid-column-gap: 50px; 
+        grid-template-columns: auto auto;
+        align-items: start;    
     }
-    #nombre:invalid {
-        border-color: red;
+    
+    #grid-item {
+        padding: 20px;
+        font-size: 20px;
+        text-align: center;
     }
 </style>
 
@@ -61,7 +68,17 @@
         }
 
         showData = function(data) {
-            
+            let html = '';
+            data.forEach(item => {
+                if (item.nombre !== undefined && item.nombre !== '') {
+                    html+="<div id=grid-item> Nombre </div><div id=grid-item>" + item.nombre + "</div>"+
+                     "<div id=grid-item> Monto </div><div id=grid-item>" + item.monto + "</div>" +
+                     "<div id=grid-item> Categoria </div><div id=grid-item>" + item.categoria + "</div>" +  
+                     "<div id=grid-item> Descripcion </div><div id=grid-item>" + item.descripcion + "</div>";
+                }
+            })   
+
+            document.getElementById("results").innerHTML = html
         }
 
         document.getElementById('button').addEventListener('click', function(event){
@@ -118,7 +135,7 @@
         <button id="button" type="Submit">submit</button>
     </form>
 
-    <a href="" onclick="postData('http://localhost:8000/save','home-mi', 'curso-vamos', null)">Send data</a>
+    <div id="results"></div>
 
 </body>
 
