@@ -152,6 +152,9 @@ body {
             } else {
                 postData(endpoint, nombre, monto, categoria);
                 getData('/gasto');
+                document.getElementById('nombre').value = '';
+                document.getElementById('monto').value = '';
+                document.getElementById('categoria').value = '';
             }           
                         
         });
