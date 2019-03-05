@@ -15,7 +15,6 @@ module.exports = (app, db) => {
     app.get('/gasto', (req, res) => {
         db.collection(collectionName).find().toArray((err, results) => {
             if (err) return res.send('error: ' + err);
-            console.log(results);
             res.json(results);
         })
     })

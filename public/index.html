@@ -51,8 +51,21 @@
 <script>
     window.addEventListener('load', function(){
         console.log('load');
+        getData('/gasto');
+        
+        function getData(endpoint) {
+            fetch(endpoint)
+            .then((res) => res.json())
+            .then((data) => showData(data))
+            .catch((err) => console.log(err))
+        }
+
+        showData = function(data) {
+            
+        }
 
         document.getElementById('button').addEventListener('click', function(event){
+            const endpoint = '/gasto/add';
             console.log('click');
             event.preventDefault();
             
@@ -65,7 +78,7 @@
                 alert('Por favor ingresar el nombre y el monto');
                 return;
             } else {
-                postData('/gasto/add', nombre, monto, categoria, descripcion);
+                postData(endpoint, nombre, monto, categoria, descripcion);
             }           
                         
         })
