@@ -48,9 +48,8 @@
         align-items: start;    
     }
     
-    #grid-item {
-        padding: 20px;
-        font-size: 20px;
+    .grid-item {
+        padding: 10px;
         text-align: center;
     }
 </style>
@@ -71,10 +70,10 @@
             let html = '';
             data.forEach(item => {
                 if (item.nombre !== undefined && item.nombre !== '') {
-                    html+="<div id=grid-item> Nombre </div><div id=grid-item>" + item.nombre + "</div>"+
-                     "<div id=grid-item> Monto </div><div id=grid-item>" + item.monto + "</div>" +
-                     "<div id=grid-item> Categoria </div><div id=grid-item>" + item.categoria + "</div>" +  
-                     "<div id=grid-item> Descripcion </div><div id=grid-item>" + item.descripcion + "</div>";
+                    html += "<div class=grid-item> Nombre </div><div class=grid-item>" + item.nombre + "</div>" +
+                     "<div class=grid-item> Monto </div><div class=grid-item>" + item.monto + "</div>" +
+                     "<div class=grid-item> Categoria </div><div class=grid-item>" + item.categoria + "</div>" +  
+                     "<div class=grid-item> Descripcion </div><div class=grid-item>" + item.descripcion + "</div>";
                 }
             })   
 
