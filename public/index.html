@@ -72,8 +72,7 @@
                 if (item.nombre !== undefined && item.nombre !== '') {
                     html += "<div class=grid-item> Nombre </div><div class=grid-item>" + item.nombre + "</div>" +
                      "<div class=grid-item> Monto </div><div class=grid-item>" + item.monto + "</div>" +
-                     "<div class=grid-item> Categoria </div><div class=grid-item>" + item.categoria + "</div>" +  
-                     "<div class=grid-item> Descripcion </div><div class=grid-item>" + item.descripcion + "</div>";
+                     "<div class=grid-item> Categoria </div><div class=grid-item>" + item.categoria + "</div>";
                 }
             })   
 
@@ -88,21 +87,21 @@
             var nombre = document.getElementById('nombre').value;
             var monto = document.getElementById('monto').value;
             var categoria = (document.getElementById('categoria').value);
-            var descripcion = (document.getElementById('descripcion').value);
 
             if (nombre ===' ' || monto === '') {
                 alert('Por favor ingresar el nombre y el monto');
                 return;
             } else {
-                postData(endpoint, nombre, monto, categoria, descripcion);
+                postData(endpoint, nombre, monto, categoria);
+                getData('/gasto');
             }           
                         
         })
 
-        function postData(endpoint, nombre, monto, categoria, descripcion) {
+        function postData(endpoint, nombre, monto, categoria) {
             fetch(endpoint, {
                 method: 'POST', // or 'PUT'
-                body: JSON.stringify({nombre, monto, categoria, descripcion}),
+                body: JSON.stringify({nombre, monto, categoria}),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -129,8 +128,6 @@
             <option value="ropa">ropa</option>
             <option value="netflix">netflix</option>
         </select>
-        <label for="descripcion">Descripcion</label>
-        <input type="text" name="descripcion" id="descripcion">
         <button id="button" type="Submit">submit</button>
     </form>
 
