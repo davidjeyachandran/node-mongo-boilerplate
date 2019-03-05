@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Gastos</title>
 </head>
 <style>
     .myForm {
@@ -39,43 +39,70 @@
     background-color: #4CAF50; /* Green */
     color: white;
     }
+
+    #nombre:valid {
+        border-color: black;
+    }
+    #nombre:invalid {
+        border-color: red;
+    }
 </style>
 
 <script>
-    function postData(endpoint, currentURL, targetURL, performance) {
-        event.preventDefault();
-        console.log(endpoint, currentURL, targetURL, performance);
+    window.addEventListener('load', function(){
+        console.log('load');
 
-        fetch(endpoint, {
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify({currentURL: currentURL, targetURL: targetURL, performance: performance}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        document.getElementById('button').addEventListener('click', function(event){
+            console.log('click');
+            event.preventDefault();
+            
+            var nombre = document.getElementById('nombre').value;
+            var monto = document.getElementById('monto').value;
+            var categoria = (document.getElementById('categoria').value);
+            var descripcion = (document.getElementById('descripcion').value);
+
+            if (nombre ===' ' || monto === '') {
+                alert('Por favor ingresar el nombre y el monto');
+                return;
+            } else {
+                postData('/gasto/add', nombre, monto, categoria, descripcion);
+            }           
+                        
         })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err))
-    }
+
+        function postData(endpoint, nombre, monto, categoria, descripcion) {
+            fetch(endpoint, {
+                method: 'POST', // or 'PUT'
+                body: JSON.stringify({nombre, monto, categoria, descripcion}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err))
+        }
+    });
+
     
 </script>
 
 <body>
     <h1>Test Post</h1>
-    <form class="myForm" action="/gasto/add" method="post">
+    <form class="myForm" action="" method="post">
         <label for="nombre">Nombre</label>
-        <input type="text" name="nombre" id="nombre">
+        <input type="text" name="nombre" id="nombre" required>
         <label for="monto">Monto</label>
-        <input type="text" name="monto" id="monto">
+        <input type="text" name="monto" id="monto" required>
         <label for="categoria">Categoria</label>
-        <select name="categoria" id="categoria">
+        <select name="categoria" id="categoria" required>
             <option value="comida">comida</option>
             <option value="ropa">ropa</option>
             <option value="netflix">netflix</option>
         </select>
         <label for="descripcion">Descripcion</label>
         <input type="text" name="descripcion" id="descripcion">
-        <button class="button" type="submit">submit</button>
+        <button id="button" type="Submit">submit</button>
     </form>
 
     <a href="" onclick="postData('http://localhost:8000/save','home-mi', 'curso-vamos', null)">Send data</a>
