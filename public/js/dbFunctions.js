@@ -2,10 +2,18 @@ var dbFunctions = (function() {
     'use strict';
     
     return {
-        postData: function(endpoint, nombre, monto, categoria) {
+
+        getData: function(endpoint, showData) {
+            fetch(endpoint)
+            .then((res) => res.json())
+            .then((data) => showData(data))
+            .catch((err) => console.log(err))
+        },
+
+        postData: function(endpoint, data) {
             fetch(endpoint, {
                 method: 'POST', // or 'PUT'
-                body: JSON.stringify({nombre, monto, categoria}),
+                body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json'
                 }

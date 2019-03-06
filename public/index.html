@@ -111,15 +111,7 @@ body {
 <script>
     window.addEventListener('load', function(){
         console.log('load');
-        getData('/gasto');
         
-        function getData(endpoint) {
-            fetch(endpoint)
-            .then((res) => res.json())
-            .then((data) => showData(data))
-            .catch((err) => console.log(err))
-        }
-
         showData = function(data) {
             let html = '';
             data.forEach(item => {
@@ -138,6 +130,8 @@ body {
             document.getElementById("results").innerHTML = html
         }
 
+        dbFunctions.getData('/gasto', showData);
+
         document.getElementById('button').addEventListener('click', function(event){
             const endpoint = '/gasto/add';
             console.log('click');
@@ -151,8 +145,8 @@ body {
                 alert('Por favor ingresar el nombre y el monto');
                 return;
             } else {
-                dbFunctions.postData(endpoint, nombre, monto, categoria);
-                getData('/gasto');
+                dbFunctions.postData(endpoint, {nombre, monto, categoria});
+                dbFunctions.getData('/gasto', showData);
                 document.getElementById('nombre').value = '';
                 document.getElementById('monto').value = '';
                 document.getElementById('categoria').value = '';
