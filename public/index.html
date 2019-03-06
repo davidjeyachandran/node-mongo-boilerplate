@@ -20,7 +20,7 @@
             let html = '';
             data.forEach(item => {
                 if (item.nombre !== undefined && item.nombre !== '') {
-                  console.log(item);
+                  // console.log(item);
                   
                     html += '<div class="column"><div class="card">' + 
                         '<div class=label> Nombre </div><div class=field>' + item.nombre + '</div>' +
@@ -58,13 +58,16 @@
                         
         });
 
-        if (document.addEventListener) document.addEventListener('click', clickEventDelete, false);
+        document.addEventListener('click', clickEventDelete, false);
         function clickEventDelete(e) {
             var e = window.e || e;         
             let href = (e.target.tagName === 'A') ? e.target.href : e.target.parentNode.href
             if (href) {
                 e.preventDefault();
                 console.log(href);
+                dbFunctions.deleteData(href);
+                console.log('Item deleted');
+                dbFunctions.getData('/gasto', showData);
             }
         }
 

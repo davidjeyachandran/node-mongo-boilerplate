@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+    <h1>Test Post</h1>
+    <form class="myForm" action="" method="post">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" id="nombre" required>
+        <label for="monto">Monto</label>
+        <input type="text" name="monto" id="monto" required>
+        <label for="categoria">Categoria</label>
+        <select name="categoria" id="categoria" required>
+            <option value="comida">comida</option>
+            <option value="ropa">ropa</option>
+            <option value="netflix">netflix</option>
+        </select>
+        <button id="button" type="Submit">submit</button>
+    </form>
+    <div id="resultados"></div>
+
+    <script>
+        function click() {
+            console.log('Click');
+            html = '<h2>Hola todos</h2>';
+            document.getElementById('resultados').innerHTML = html;
+            
+        }
+        document.getElementById('button').addEventListener('click', click);
+        
+    </script>
+</body>
+</html>

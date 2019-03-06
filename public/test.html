@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gastos</title>
+</head>
+<style>
+    .myForm {
+        display: grid;
+        grid-template-columns: [labels] auto [controls] 1fr;
+        grid-auto-flow: row;
+        grid-gap: .8em;
+        background: #eee;
+        padding: 1.2em;
+    }
+
+    .myForm>label {
+        grid-column: labels;
+        grid-row: auto;
+    }
+
+    .myForm>input,
+    .myForm>textarea,
+    .myForm>button {
+        grid-column: controls;
+        grid-row: auto;
+        border: none;
+        padding: 1em;
+    }
+
+    button {
+        -webkit-transition-duration: 0.4s;
+        /* Safari */
+        transition-duration: 0.4s;
+        background-color: rgb(86, 151, 86);
+    }
+
+    button:hover {
+        background-color: #4CAF50;
+        /* Green */
+        color: white;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Float four columns side by side */
+    .column {
+        float: left;
+        width: 25%;
+        padding: 0 10px;
+    }
+
+    /* Remove extra left and right margins, due to padding in columns */
+    .row {
+        margin: 0 -5px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Style the counter cards */
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        /* this adds the "card" effect */
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
+        padding: 10px;
+        margin-top: 20px;
+        margin-right: 10px;
+    }
+
+    .card:hover {
+        background-color: #e5e5e5;
+        box-shadow: none;
+    }
+
+    .label {
+        font-size: 0.6em;
+        color: #999;
+    }
+
+    .field {
+        font-size: 1em;
+        color: #222;
+        font-weight: 200;
+        padding-bottom: 5px;
+    }
+
+    /* Responsive columns - one column layout (vertical) on small screens */
+    @media screen and (max-width: 600px) {
+        .column {
+            width: 100%;
+            display: block;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+
+<script>
+window.addEventListener('load', function() {
+    getData('/gasto');
+
+    const getData = function(endpoint) {
+        fetch(endpoint)
+        .then(res => res.json())
+        .then(data => showData(data))
+        .catch(err => console.log(err))
+    }
+
+    const showData = function(data) {
+        let html = data.map(item => {
+            if (item.nombre !== undefined && item.nombre !== '') {
+                return '<div class="column"><div class="card">' + 
+                        '<div class=label> Nombre </div><div class=field>' + item.nombre + '</div>' +
+                        '<div class=label> Monto </div><div class=field>' + item.monto + '</div>' +
+                        '<div class=label> Categoria </div><div class=field>' + item.categoria + '</div>' +
+                        '<div class=actions><a class=deletelink href="/gasto/delete/' + item._id + '">Borrar</a></div>' +
+                        '</div></div>'
+            }
+        }).join();
+
+        document.getElementById('results').innerHTML = html;
+    }
+
+    // click submit button
+    document.getElementById('button').addEventListener('click', event => {
+        const endpoint = '/gasto/add';
+        event.preventDefault();
+
+        var nombre = document.getElementById('nombre').value;
+        var monto = document.getElementById('monto').value;
+        var categoria = document.getElementById('categoria').value;
+
+        if (nombre === '' || monto === '') {
+            alert('Por favor ingresar el nombre y el monto');
+            return;
+        } else {
+            postData(endpoint, nombre, monto, categoria);
+            getData('/gasto');
+
+            //clear values
+            document.getElementById('nombre').value = '';
+            document.getElementById('monto').value = '';
+            document.getElementById('categoria').value = '';
+        }
+    })
+
+    // click delete event
+    document.addEventListener('click', event => {
+        let href = (event.target.tagName === 'A') ? event.target.href : e.target.parentNode.href
+        if (href) {
+            event.preventDefault();
+        }
+    })
+
+    const postData(endpoint, nombre, monto, categoria) {
+        fetch(endpoint, {
+            method: 'POST',
+            body: JSON.stringify({nombre, monto, categoria}),
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+    }
+
+    const deleteData = function(endpoint) {
+        fetch(endpoint, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err));
+    }
+
+
+})
+
+
+</script>
+
+<body>
+    <h1>Test Post</h1>
+    <form class="myForm" action="" method="post">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" id="nombre" required>
+        <label for="monto">Monto</label>
+        <input type="text" name="monto" id="monto" required>
+        <label for="categoria">Categoria</label>
+        <select name="categoria" id="categoria" required>
+            <option value="comida">comida</option>
+            <option value="ropa">ropa</option>
+            <option value="netflix">netflix</option>
+        </select>
+        <button id="button" type="Submit">submit</button>
+    </form>
+
+    <div id="results">
+        <div class="column">
+            <div class="card">
+                <div class="label"> Nombre </div>
+                <div class="field">f</div>
+                <div class="label"> Monto </div>
+                <div class="field">f</div>
+                <div class="label"> Categoria </div>
+                <div class="field">comida</div>
+                <a href="test.com">Test</a>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div class="label"> Nombre </div>
+                <div class="field">David</div>
+                <div class="label"> Monto </div>
+                <div class="field">234</div>
+                <div class="label"> Categoria </div>
+                <div class="field">comida</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div class="label"> Nombre </div>
+                <div class="field">Dave</div>
+                <div class="label"> Monto </div>
+                <div class="field">32</div>
+                <div class="label"> Categoria </div>
+                <div class="field">ropa</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div class="label"> Nombre </div>
+                <div class="field">Annabelle</div>
+                <div class="label"> Monto </div>
+                <div class="field">52</div>
+                <div class="label"> Categoria </div>
+                <div class="field">netflix</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div class="label"> Nombre </div>
+                <div class="field">Kiara</div>
+                <div class="label"> Monto </div>
+                <div class="field">20</div>
+                <div class="label"> Categoria </div>
+                <div class="field">netflix</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div class="label"> Nombre </div>
+                <div class="field">Melissa</div>
+                <div class="label"> Monto </div>
+                <div class="field">210</div>
+                <div class="label"> Categoria </div>
+                <div class="field">netflix</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div class="label"> Nombre </div>
+                <div class="field">Melissa</div>
+                <div class="label"> Monto </div>
+                <div class="field">210</div>
+                <div class="label"> Categoria </div>
+                <div class="field">netflix</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
