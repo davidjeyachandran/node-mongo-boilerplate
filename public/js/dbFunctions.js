@@ -11,7 +11,7 @@ var dbFunctions = (function() {
             .catch((err) => console.log(err))
         },
 
-        postData: function(endpoint, data) {
+        postData: function(endpoint, data, showData, endpointShowData) {
             fetch(endpoint, {
                 method: 'POST', // or 'PUT'
                 body: JSON.stringify(data),
@@ -20,7 +20,7 @@ var dbFunctions = (function() {
                 }
             })
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => this.getData(endpointShowData, showData))
             .catch((err) => console.log(err))
         },
 
