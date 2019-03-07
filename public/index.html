@@ -16,6 +16,7 @@
     window.addEventListener('load', function(){
         console.log('load');
         const endpointShowData = '/gasto';
+        const endpointAddData = '/gasto/add';
 
         showData = function(data) {
             let html = '';
@@ -38,7 +39,6 @@
         dbFunctions.getData(endpointShowData, showData);
 
         document.getElementById('button').addEventListener('click', function(event){
-            const endpoint = '/gasto/add';
             console.log('click');
             event.preventDefault();
             
@@ -50,7 +50,7 @@
                 alert('Por favor ingresar el nombre y el monto');
                 return;
             } else {
-                dbFunctions.postData(endpoint, {nombre, monto, categoria});
+                dbFunctions.postData(endpointAddData, {nombre, monto, categoria});
                 dbFunctions.getData('/gasto', showData);
                 document.getElementById('nombre').value = '';
                 document.getElementById('monto').value = '';
