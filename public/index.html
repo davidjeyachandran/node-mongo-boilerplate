@@ -9,8 +9,6 @@
     <script src="./js/dbFunctions.js"></script>
     <link rel="stylesheet" href="./css/style.css">
 </head>
-<style>
-</style>
 
 <script>
     window.addEventListener('load', function(){
@@ -50,8 +48,7 @@
                 alert('Por favor ingresar el nombre y el monto');
                 return;
             } else {
-                dbFunctions.postData(endpointAddData, {nombre, monto, categoria});
-                dbFunctions.getData('/gasto', showData);
+                dbFunctions.postData(endpointAddData, { nombre, monto, categoria }, showData, endpointShowData);
                 document.getElementById('nombre').value = '';
                 document.getElementById('monto').value = '';
                 document.getElementById('categoria').value = '';
@@ -60,13 +57,11 @@
         });
 
         document.addEventListener('click', function(event) {
-            var e = window.event || event;         
-              let href = (e.target.tagName === 'A') ? e.target.href : e.target.parentNode.href
-              if (href) {
-                  e.preventDefault();
-                  console.log(href);
-                  dbFunctions.deleteData(href, showData, endpointShowData);
-              }
+            let href = (event.target.tagName === 'A') ? event.target.href : event.target.parentNode.href
+                if (href) {
+                    event.preventDefault();
+                    dbFunctions.deleteData(href, showData, endpointShowData);
+                }
         });
 
     });
