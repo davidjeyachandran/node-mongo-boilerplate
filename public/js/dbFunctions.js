@@ -4,6 +4,7 @@ var dbFunctions = (function() {
     return {
 
         getData: function(endpoint, showData) {
+            console.log('getData');
             fetch(endpoint)
             .then((res) => res.json())
             .then((data) => showData(data))
@@ -23,7 +24,7 @@ var dbFunctions = (function() {
             .catch((err) => console.log(err))
         },
 
-        deleteData: function(endpoint) {
+        deleteData: function(endpoint, showData, endpointShowData) {
             fetch(endpoint, {
                 method: 'DELETE',
                 headers: {
@@ -31,7 +32,7 @@ var dbFunctions = (function() {
                 }
             })
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => this.getData(endpointShowData, showData))
             .catch((err) => console.log(err))
         }
     }

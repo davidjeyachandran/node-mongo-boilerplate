@@ -15,7 +15,8 @@
 <script>
     window.addEventListener('load', function(){
         console.log('load');
-        
+        const endpointShowData = '/gasto';
+
         showData = function(data) {
             let html = '';
             data.forEach(item => {
@@ -34,7 +35,7 @@
             document.getElementById("results").innerHTML = html
         }
 
-        dbFunctions.getData('/gasto', showData);
+        dbFunctions.getData(endpointShowData, showData);
 
         document.getElementById('button').addEventListener('click', function(event){
             const endpoint = '/gasto/add';
@@ -58,18 +59,15 @@
                         
         });
 
-        document.addEventListener('click', clickEventDelete, false);
-        function clickEventDelete(e) {
-            var e = window.e || e;         
-            let href = (e.target.tagName === 'A') ? e.target.href : e.target.parentNode.href
-            if (href) {
-                e.preventDefault();
-                console.log(href);
-                dbFunctions.deleteData(href);
-                console.log('Item deleted');
-                dbFunctions.getData('/gasto', showData);
-            }
-        }
+        document.addEventListener('click', function(event) {
+            var e = window.event || event;         
+              let href = (e.target.tagName === 'A') ? e.target.href : e.target.parentNode.href
+              if (href) {
+                  e.preventDefault();
+                  console.log(href);
+                  dbFunctions.deleteData(href, showData, endpointShowData);
+              }
+        });
 
     });
 
