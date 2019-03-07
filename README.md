@@ -1,4 +1,4 @@
-# FasterWeb-API
+# Gastos
 
 ## Prerequisites
 1. Install nodejs and npm (Node Package Manager)
